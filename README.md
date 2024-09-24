@@ -34,6 +34,12 @@ The Kibana Alert is configured to query from `metricbeat-*` index where `postgre
 
 ![Kibana Rule](./screenshots/kibana_rule.png)
 
+## Execute ansible rulebook
+
+```
+ansible-rulebook --rulebook rulebooks/webhook-pg_terminate_connections.yaml -i inventory
+```
+
 # Simulating high active connections on postgresql
 
 Execute the following command to trigger pgbench in postgresql pod container
