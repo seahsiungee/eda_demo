@@ -1,0 +1,11 @@
+---
+- name: Terminate all connections
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - debug:
+        msg: "Terminating all connections for {{ database }}"
+    - name: Execute psql terminate command via kubectl
+      shell: kubectl get pods --selector=app=postgres -o=name | xargs -t -n 1 -I {} kubectl exec {}  --  bash -c "psql -d postgres -U postgres -c 'SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid <> pg_backend_pid();'"
+      register: kubectl_resp
+    - debug: msg="{{kubectl_resp.stdout}}"
